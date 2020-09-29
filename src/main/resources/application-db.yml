@@ -1,0 +1,22 @@
+spring:
+  jpa:
+    database: ${KRISTAL_JPA_DB}
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  datasource:
+    Url: ${KRISTAL_DB_URL}
+    username: ${KRISTAL_DB_USERNAME}
+    password: ${KRISTAL_DB_PASSWORD}
+    hikari:
+      idle-timeout: 120000
+      minimumIdle: 10
+      maximum-pool-size: 50
+      connectionTimeout: 60000
+

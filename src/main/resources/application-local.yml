@@ -1,0 +1,7 @@
+KRISTAL_JPA_DB: mysql
+KRISTAL_DB_URL: jdbc:mysql://localhost/kristal?useSSL=false
+KRISTAL_DB_USERNAME: root
+KRISTAL_DB_PASSWORD: admin
+
+server:
+  port: 8080

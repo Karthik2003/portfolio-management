@@ -1,0 +1,80 @@
+@startuml
+!pragma useVerticalIf on
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist
+!includeurl AWSPuml/AWSCommon.puml
+!includeurl AWSPuml/Compute/all.puml
+!includeurl AWSPuml/Mobile/APIGateway.puml
+!includeurl AWSPuml/General/MobileClient.puml
+!includeurl AWSPuml/Compute/EC2Instance.puml
+!includeurl AWSPuml/Database/RDSMySQLinstance.puml
+!includeurl AWSPuml/NetworkingAndContentDelivery/VPC.puml
+!includeurl AWSPuml/NetworkingAndContentDelivery/ELBApplicationLoadBalancer.puml
+!include <tupadr3/common>
+!include <office/Concepts/firewall_orange>
+!include <elastic/common>
+!include <elastic/elasticsearch/elasticsearch>
+!include <elastic/logstash/logstash>
+!include <elastic/kibana/kibana>
+!define SPRITESURL https://raw.githubusercontent.com/rabelenda/cicon-plantuml-sprites/v1.0/sprites
+!includeurl SPRITESURL/kafka.puml
+!include <tupadr3/font-awesome/database>
+
+:browser: as b <<Desktop/Laptop>>
+MobileClient(mobile, customer, user)
+cloud "DDOS" {
+[AKAMAI] as akamai
+}
+'data flows
+b -> akamai
+mobile -> akamai
+    OFF_FIREWALL_ORANGE(fw,Firewall)
+VPC(EC2Instance, EC2Instance, kristal_vpc) {
+    ELBApplicationLoadBalancer(ALB_KONG, ALB_KONG, kong, kong)
+    package "Kong Cluster" {
+      [Kong 3 node instances] as kong_cluster
+    }
+    ELBApplicationLoadBalancer(ALB_API, ALB_API, api, api)
+    rectangle "EKS/K8s" as eks {
+        [Mn microservice cluster]
+        [M1 microservice cluster]
+        frame "Message Processing" as mp{
+          [microservice cluster (Listener + Engine)]
+        }
+    }
+  package "ELK Stack/Logs Dashboard" as elk {
+    [Elasticsearch, Logstash/FluentD, Kibana]
+  }
+  RDSMySQLinstance(mysqlDB, "MySQL Database", "cluster")
+  package "Kafka cluster" as kafka {
+    queue "<$kafka>"
+  }
+  package "MongoDB cluster" as mgdb {
+    FA_DATABASE(mgdb1,Data Lake,database,white) #RoyalBlue
+  }
+}
+
+cloud "External Source" as es {
+  [Source n]
+  [Source 1]
+}
+  note right of kong_cluster
+     Oauth framework
+     ID Service redirection (ID/Access Tokens)
+     OpenID Connect Spec
+  end note
+  note right of mgdb
+     Data lake will be potential source for Data Analytics
+  end note
+
+'data flows
+akamai -down-> ALB_KONG
+ALB_KONG -right-> kong_cluster
+kong_cluster -down-> ALB_API
+ALB_API -down-> eks
+eks -down-> elk
+eks -down-> mysqlDB
+es -right-> mp
+mp -down-> kafka
+kafka -up-> mysqlDB
+kafka -left-> mgdb
+@enduml

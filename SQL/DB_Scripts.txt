@@ -1,0 +1,45 @@
+CREATE TABLE kristal.portfolio_details_t (
+    id VARCHAR (100) NOT NULL,
+	account_id VARCHAR (30) NOT NULL,
+    asset_name VARCHAR (60) NOT NULL,
+	asset_symbol VARCHAR (20) NOT NULL,
+    asset_volume INT (12) NOT NULL,
+    created_by VARCHAR(100),
+	date_created datetime,
+    updated_by VARCHAR(100),
+	date_updated datetime,	
+    PRIMARY KEY (id)
+);
+
+INSERT INTO kristal.portfolio_details_t (id,account_id,asset_name,asset_symbol,asset_volume,created_by,date_created,updated_by,date_updated) 
+VALUES (uuid(),'acc0000001','ICICI BANK LTD','ICICIBANK',210,'SYSTEM',now(),'SYSTEM',now()),
+(uuid(),'acc0000002','HCL TECHNOLOGIES LTD','HCLTECH',775,'SYSTEM',now(),'SYSTEM',now()),
+(uuid(),'acc0000001','INFOSYS LTD','INFY',23,'SYSTEM',now(),'SYSTEM',now()),
+(uuid(),'acc0000001','NTPC LTD','NTPC',1004,'SYSTEM',now(),'SYSTEM',now()),
+(uuid(),'acc0000001','WIPRO LTD','WIPRO',2000,'SYSTEM',now(),'SYSTEM',now()),
+(uuid(),'acc0000002','BHARTI AIRTEL LTD','BHARTIARTL',175,'SYSTEM',now(),'SYSTEM',now()),
+(uuid(),'acc0000003','COAL INDIA LTD','COALINDIA',210,'SYSTEM',now(),'SYSTEM',now()),
+(uuid(),'acc0000002','CASH','CASH',90000,'SYSTEM',now(),'SYSTEM',now());
+
+CREATE TABLE kristal.asset_ticker_t (
+    id VARCHAR (100) NOT NULL,
+    asset_symbol VARCHAR (20) NOT NULL,
+    asset_name VARCHAR (60) NOT NULL,
+    unit_price DECIMAL (20,2) NOT NULL,
+    source_name VARCHAR(100) NOT NULL,
+    created_by VARCHAR(100),
+	date_created datetime,
+    updated_by VARCHAR(100),
+	date_updated datetime,	
+    PRIMARY KEY (id)
+);
+
+INSERT INTO kristal.asset_ticker_t (id,asset_symbol,asset_name,unit_price,source_name,created_by,date_created,updated_by,date_updated)
+VALUES (uuid(),'ICICIBANK','ICICI BANK LTD',348.50,'Bloomberg','SYSTEM',now(),'SYSTEM',now()),
+(uuid(),'HCLTECH','HCL TECHNOLOGIES LTD',827.50,'Thomson Reuters','SYSTEM',now(),'SYSTEM',now()), 
+(uuid(),'INFY','INFOSYS LTD',827.50,'Capital IQ','SYSTEM',now(),'SYSTEM',now()), 
+(uuid(),'NTPC','NTPC LTD',84.70,'Capital IQ','SYSTEM',now(),'SYSTEM',now()), 
+(uuid(),'WIPRO','WIPRO LTD',313.90,'Bloomberg','SYSTEM',now(),'SYSTEM',now()), 
+(uuid(),'BHARTIARTL','BHARTI AIRTEL LTD',439.70,'Bloomberg','SYSTEM',now(),'SYSTEM',now()), 
+(uuid(),'COALINDIA','COAL INDIA LTD',117.10,'Thomson Reuters','SYSTEM',now(),'SYSTEM',now()),
+(uuid(),'CASH','CASH',1,'Thomson Reuters','SYSTEM',now(),'SYSTEM',now());
